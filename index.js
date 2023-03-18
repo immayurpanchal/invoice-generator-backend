@@ -16,12 +16,19 @@ app.use(bodyParser.json());
 
 const port = 3000;
 
-app.get('/products', (req, res) => {
-	res.json('Hi' + req.query.q);
+app.get('/products', async (req, res) => {
+	const { data, error } = await supabase.from('products').select('*').ilike('product_name', `%${req.query.q}%`);
+
+	res.status(200).json({ data, error });
+});
+
+app.get('/customers', async (req, res) => {
+	let { data, error } = await supabase.from('customers').select('*');
+	res.status(200).json({ data, error });
 });
 
 app.get('/', (req, res) => {
-	res.json('Hello World!');
+	res.status(200).json('Hello World!');
 });
 
 app.listen(port, () => {
