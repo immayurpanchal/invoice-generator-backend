@@ -14,7 +14,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.get('/products', async (req, res) => {
 	const { data, error } = await supabase.from('products').select('*').ilike('product_name', `%${req.query.q}%`);
